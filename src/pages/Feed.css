@@ -1,0 +1,102 @@
+:root {
+  --primary-green: #688049;
+}
+
+/* Header */
+.feed-toolbar {
+  --background: var(--primary-green);
+  --color: white;
+}
+
+.feed-header-title {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* Search Bar */
+.search-container {
+  padding: 8px 16px;
+  background-color: #fff;
+}
+
+.custom-searchbar {
+  --border-radius: 25px;
+  --background: #fff;
+  border: 1px solid #ddd;
+  --box-shadow: none;
+}
+
+/* Tabs Segment */
+.feed-segment {
+  border-bottom: 1px solid #eee;
+}
+
+.feed-segment IonSegmentButton {
+  --indicator-color: var(--primary-green);
+  --indicator-height: 4px;
+  font-weight: bold;
+}
+
+/* Feed List */
+.feed-main-list {
+  padding-bottom: 80px;
+}
+
+.feed-post-item {
+  --padding-start: 16px;
+  --inner-padding-end: 16px;
+  margin-top: 10px;
+}
+
+.post-content {
+  margin-right: 12px;
+}
+
+.post-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #000;
+  margin-bottom: 6px;
+}
+
+.post-desc {
+  font-size: 14px;
+  color: #444;
+  white-space: normal;
+  line-height: 1.4;
+  margin-bottom: 8px;
+}
+
+.post-comment-info {
+  font-size: 13px;
+  color: #999;
+}
+
+.post-thumbnail-square {
+  --size: 85px;
+}
+
+.post-thumbnail-square img {
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+/* Footer Nav */
+.footer-toolbar-bg {
+  --background: var(--primary-green);
+}
+
+.footer-nav-container {
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 0;
+}
+
+.nav-icon {
+  font-size: 32px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.nav-icon.active {
+  color: #fff;
+}

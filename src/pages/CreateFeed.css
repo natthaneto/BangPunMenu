@@ -1,0 +1,56 @@
+/* ตกแต่ง Toolbar */
+.create-feed-toolbar {
+  --background: #688049; /* สีเขียวตามโปรเจกต์ */
+  --color: white;
+}
+
+.create-feed-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ช่องอัปโหลดรูป */
+.image-upload-box {
+  width: 100%;
+  height: 250px;
+  background: #f4f4f4;
+  border: 2px dashed #ccc;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.feed-preview-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.upload-placeholder {
+  text-align: center;
+  color: #888;
+}
+
+.upload-placeholder ion-icon {
+  font-size: 50px;
+}
+
+/* ปรับแต่ง Input */
+.custom-input-item {
+  --background: #f9f9f9;
+  --border-radius: 10px;
+  margin-bottom: 15px;
+  padding: 5px 10px;
+}
+
+/* ปุ่มโพสต์ */
+.post-btn {
+  --background: #688049;
+  --border-radius: 10px;
+  height: 50px;
+  font-weight: bold;
+}

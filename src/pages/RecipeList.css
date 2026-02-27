@@ -1,0 +1,103 @@
+:root {
+  --primary-green: #688049;
+}
+
+/* Header Styling */
+.recipe-list-toolbar {
+  --background: var(--primary-green);
+  --color: white;
+}
+
+.recipe-list-title {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+/* Search Container */
+.search-container {
+  padding: 8px 16px;
+  background-color: #fff;
+}
+
+.custom-searchbar {
+  --border-radius: 25px;
+  --background: #fff;
+  --box-shadow: none;
+  border: 1px solid #ddd;
+  padding: 0;
+}
+
+/* Category Tabs */
+.category-segment {
+  --background: #fff;
+  border-bottom: 1px solid #eee;
+}
+
+.category-segment IonSegmentButton {
+  --color: #000;
+  --color-checked: #000;
+  --indicator-color: var(--primary-green);
+  --indicator-height: 4px;
+  font-weight: bold;
+}
+
+/* Recipe List */
+.recipe-main-list {
+  padding-top: 0;
+  padding-bottom: 80px; /* Space for footer */
+}
+
+.recipe-list-item {
+  --padding-start: 16px;
+  --inner-padding-end: 16px;
+  --min-height: 100px;
+  margin-bottom: 4px;
+}
+
+.recipe-thumb {
+  --size: 100px;
+  margin-right: 16px;
+}
+
+.recipe-thumb img {
+  border-radius: 4px;
+  object-fit: cover;
+}
+
+.recipe-name {
+  font-size: 18px;
+  font-weight: bold;
+  color: #000;
+  margin-bottom: 4px;
+}
+
+.recipe-author {
+  font-size: 15px;
+  color: #333;
+  margin-bottom: 12px;
+}
+
+.recipe-views {
+  font-size: 14px;
+  color: #666;
+}
+
+/* Footer (Shared with Home) */
+.footer-toolbar {
+  --background: var(--primary-green);
+}
+
+.footer-nav-icons {
+  display: flex;
+  justify-content: space-around;
+  padding: 8px 0;
+}
+
+.nav-icon {
+  font-size: 32px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.nav-icon.active {
+  color: #fff;
+}

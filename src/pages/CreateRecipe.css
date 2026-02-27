@@ -1,0 +1,67 @@
+/* ตกแต่ง Toolbar */
+.create-recipe-toolbar {
+  --background: #688049; 
+  --color: white;
+}
+
+.create-recipe-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* ช่องอัปโหลดรูป */
+.image-upload-box {
+  width: 100%;
+  height: 220px;
+  background: #f4f4f4;
+  border: 2px dashed #688049; /* เปลี่ยนเป็นสีเขียวให้เข้ากัน */
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.recipe-preview-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.upload-placeholder {
+  text-align: center;
+  color: #688049;
+}
+
+.upload-placeholder ion-icon {
+  font-size: 45px;
+  margin-bottom: 5px;
+}
+
+/* ปรับแต่ง Input ให้โค้งมนสวยงาม */
+.custom-input-item {
+  --background: #f9f9f9;
+  --border-radius: 12px;
+  margin-bottom: 12px;
+  --padding-start: 15px;
+  --highlight-color-focused: #688049;
+}
+
+/* ปุ่มโพสต์ */
+.post-btn {
+  --background: #688049;
+  --border-radius: 12px;
+  height: 55px;
+  font-weight: bold;
+  margin-top: 10px;
+  font-size: 1.1rem;
+}
+
+/* ปรับสีของ Label */
+ion-label {
+  color: #688049 !important;
+  font-weight: 600 !important;
+  margin-bottom: 8px !important;
+}

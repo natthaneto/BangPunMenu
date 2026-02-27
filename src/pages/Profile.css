@@ -1,0 +1,65 @@
+.profile-header-section {
+  padding: 40px 20px;
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+}
+
+.user-large-avatar {
+  width: 80px;
+  height: 80px;
+  margin-right: 20px;
+  background: #E5E5E5;
+}
+
+.user-info-text h2 {
+  font-size: 28px;
+  font-weight: bold;
+  margin: 0;
+  color: #000;
+}
+
+.user-info-text p {
+  font-size: 16px;
+  color: #666;
+  margin: 4px 0 0 0;
+}
+
+.profile-menu-list {
+  background: transparent;
+  padding: 0;
+}
+
+.profile-item {
+  --padding-start: 20px;
+  --min-height: 56px;
+}
+
+.profile-item IonIcon[slot="start"] {
+  font-size: 24px;
+  color: #333;
+}
+
+.profile-item IonLabel {
+  font-size: 18px;
+  color: #000;
+}
+
+.nested {
+  --padding-start: 60px;
+  --background: #fdfdfd;
+}
+
+.dropdown-icon {
+  font-size: 20px;
+  color: #999;
+  transform: rotate(90deg); /* ให้ลูกศรชี้ลงเหมือนในรูป */
+}
+
+.logout-item {
+  margin-top: 10px;
+}
+
+.logout-item IonLabel {
+  color: #000;
+}

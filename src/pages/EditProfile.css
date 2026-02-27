@@ -1,0 +1,92 @@
+/* Header ส่วนโปรไฟล์ */
+.edit-profile-header {
+  display: flex;
+  align-items: center;
+  padding: 30px 20px;
+  background-color: #fff;
+}
+
+.avatar-wrapper {
+  position: relative;
+  margin-right: 20px;
+}
+
+.large-avatar {
+  width: 100px;
+  height: 100px;
+}
+
+.edit-icon-badge {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background: #fff;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  border: 1px solid #ddd;
+}
+
+.edit-icon-badge IonIcon {
+  font-size: 16px;
+  color: #333;
+}
+
+.header-text h2 {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.header-text p {
+  font-size: 16px;
+  color: #888;
+  margin: 5px 0 0 0;
+}
+
+/* ส่วน List รายการแก้ไข */
+.edit-form-list {
+  margin-top: 10px;
+}
+
+.edit-item {
+  --padding-start: 20px;
+  --min-height: 60px;
+}
+
+.item-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.label {
+  font-size: 18px;
+  color: #333;
+  font-weight: 500;
+}
+
+.input-field {
+  --padding-end: 0;
+  font-size: 16px;
+  color: #666;
+  text-align: right; /* ให้ตัวหนังสือชิดขวาตามรูป */
+}
+
+/* ปุ่มยืนยัน */
+.button-container {
+  padding: 40px 50px;
+}
+
+.confirm-button {
+  --background: #1e88e5; /* สีฟ้าตามรูป */
+  --border-radius: 10px;
+  --box-shadow: none;
+  font-weight: bold;
+  height: 48px;
+}
