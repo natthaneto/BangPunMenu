@@ -4,9 +4,9 @@ import {
   IonContent, IonPage, IonIcon, IonGrid, IonRow, IonCol, IonList, IonItem,
   IonLabel, IonThumbnail, IonLoading
 } from '@ionic/react';
-import { searchOutline, restaurantOutline, chatbubbleEllipsesOutline } from 'ionicons/icons';
-import { db } from '../firebaseConfig'; // นำเข้า db
-import { collection, query, orderBy, limit, onSnapshot } from 'firebase/firestore'; // นำเข้า Firestore tools
+import { restaurantOutline, chatbubbleEllipsesOutline } from 'ionicons/icons';
+import { db, auth } from '../firebaseConfig';
+import { collection, query, orderBy, limit, onSnapshot } from 'firebase/firestore';
 import './Home.css';
 
 const Home: React.FC = () => {
@@ -14,7 +14,9 @@ const Home: React.FC = () => {
   const [recipes, setRecipes] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // 1. หมวดหมู่สำหรับการนำทาง
+  // ✅ ดึงชื่อ Username (ถ้าไม่มีให้เอาชื่อหน้า Email)
+  const username = auth.currentUser?.displayName || auth.currentUser?.email?.split('@')[0] || "Member";
+
   const categories = [
     { id: 'esarn', name: 'อาหารอีสาน', img: 'https://www.thaifoodcookbook.net/wp-content/uploads/2025/05/%E0%B9%80%E0%B8%A1%E0%B8%99%E0%B8%B9%E0%B8%AD%E0%B8%B2%E0%B8%AB%E0%B8%B2%E0%B8%A3%E0%B8%AD%E0%B8%B5%E0%B8%AA%E0%B8%B2%E0%B8%99%E0%B8%AA%E0%B8%B8%E0%B8%94%E0%B9%81%E0%B8%8B%E0%B9%88%E0%B8%9A%E0%B8%A2%E0%B8%AD%E0%B8%94%E0%B8%99%E0%B8%B4%E0%B8%A2%E0%B8%A12025.jpg' },
     { id: 'thai', name: 'อาหารไทย', img: 'https://www.allthaievent.com/images/event/25453.jpg' },
@@ -22,17 +24,13 @@ const Home: React.FC = () => {
     { id: 'national', name: 'อาหารต่างชาติ', img: 'https://t4.ftcdn.net/jpg/02/25/96/47/360_F_225964798_yBf4tI79fmIGWwsZpo1K5lhsEQCXy2Pn.jpg' },
   ];
 
-  // 2. ดึงข้อมูลเมนูอาหารล่าสุดจาก Firestore
   useEffect(() => {
-    // ดึงเมนูทั้งหมด เรียงจากใหม่ไปเก่า และจำกัดแค่ 5-10 รายการเพื่อความสวยงามในหน้า Home
     const q = query(collection(db, "recipes"), orderBy("createdAt", "desc"), limit(10));
-
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
       setRecipes(data);
       setLoading(false);
     });
-
     return () => unsubscribe();
   }, []);
 
@@ -43,14 +41,7 @@ const Home: React.FC = () => {
   return (
     <IonPage>
       <IonContent fullscreen>
-        {/* Header Search */}
-        <div className="custom-header">
-          <div className="search-box">
-            <IonIcon icon={searchOutline} className="search-icon" />
-            <input type="text" placeholder="ค้นหาเมนูอาหาร" className="search-input" />
-          </div>
-          <img src="https://ionicframework.com/docs/img/demos/avatar.svg" alt="Profile" className="profile-avatar" />
-        </div>
+
 
         {/* Banner */}
         <div className="hero-banner">
@@ -89,7 +80,7 @@ const Home: React.FC = () => {
           ))}
         </div>
 
-        {/* 5. ส่วนแสดงเมนูอาหารล่าสุด (เปลี่ยนจาก Feed เดิม) */}
+        {/* ส่วนแสดงเมนูอาหารล่าสุด */}
         <div className="community-feed-section">
           <h2 className="section-title">เมนูแนะนำล่าสุด</h2>
 
@@ -102,7 +93,7 @@ const Home: React.FC = () => {
                 return (
                   <IonItem
                     key={item.id}
-                    lines="none"
+                    lines="inset" // หรือใช้ "full" ถ้าอยากให้เส้นยาวสุดขอบหน้าจอ
                     className="custom-feed-item"
                     onClick={() => history.push(`/recipe-detail/${item.id}`)}
                   >

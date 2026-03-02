@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   IonContent, IonPage, IonHeader, IonToolbar, IonTitle, IonButtons, IonBackButton,
   IonItem, IonLabel, IonInput, IonTextarea, IonButton, IonLoading, IonToast, IonIcon
 } from '@ionic/react';
-import { imageOutline } from 'ionicons/icons';
-import { auth, db } from '../firebaseConfig';
+import { imageOutline, cameraOutline } from 'ionicons/icons';
+import { auth, db, storage } from '../firebaseConfig'; // เพิ่ม storage
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'; // เพิ่มฟังก์ชัน storage
 import { useHistory } from 'react-router-dom';
 import './CreateRecipe.css'; 
 
@@ -14,7 +15,22 @@ const CreateFeed: React.FC = () => {
   const [desc, setDesc] = useState('');
   const [loading, setLoading] = useState(false);
   const [toastMsg, setToastMsg] = useState('');
+  
+  // --- ส่วนที่เพิ่มสำหรับรูปภาพ ---
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const history = useHistory();
+
+  // ฟังก์ชันเลือกรูป
+  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setSelectedImage(file);
+      setPreviewUrl(URL.createObjectURL(file)); // สร้าง Preview ให้ผู้ใช้เห็น
+    }
+  };
 
   const handlePostFeed = async () => {
     const user = auth.currentUser;
@@ -23,7 +39,6 @@ const CreateFeed: React.FC = () => {
       return;
     }
 
-    // --- บังคับกรอกเฉพาะหัวข้อ ---
     if (!title.trim()) {
       setToastMsg("กรุณาใส่หัวข้อที่ต้องการคุย");
       return;
@@ -31,13 +46,22 @@ const CreateFeed: React.FC = () => {
 
     setLoading(true);
     try {
-      const feedImageUrl = "/assets/2771401.png";
+      let finalImageUrl = "/assets/2771401.png"; // ค่าเริ่มต้นถ้าไม่เลือกรูป
+
+      // --- 1. อัปโหลดรูปภาพไปยัง Firebase Storage ---
+      if (selectedImage) {
+        const imageRef = ref(storage, `feeds/${Date.now()}_${selectedImage.name}`);
+        const uploadResult = await uploadBytes(imageRef, selectedImage);
+        finalImageUrl = await getDownloadURL(uploadResult.ref);
+      }
+
+      // --- 2. บันทึกข้อมูลลง Firestore ---
       const authorDisplayName = user.displayName || user.email?.split('@')[0] || "สมาชิก";
 
       await addDoc(collection(db, "feeds"), {
         title: title.trim(),
-        desc: desc.trim(), // ไม่บังคับ แต่ใช้ trim เพื่อความสะอาดของข้อมูล
-        img: feedImageUrl,
+        desc: desc.trim(),
+        img: finalImageUrl, // ใช้ URL จริงจาก Storage
         userName: authorDisplayName,
         userEmail: user.email,
         userAvatar: user.photoURL || "https://ionicframework.com/docs/img/demos/avatar.svg",
@@ -51,6 +75,7 @@ const CreateFeed: React.FC = () => {
       setTimeout(() => history.push('/home'), 1500);
     } catch (error: any) {
       setLoading(false);
+      console.error(error);
       setToastMsg("เกิดข้อผิดพลาด: " + error.message);
     }
   };
@@ -65,12 +90,26 @@ const CreateFeed: React.FC = () => {
       </IonHeader>
 
       <IonContent className="ion-padding">
-        <div className="image-upload-box">
-          <div className="upload-placeholder" style={{ background: 'rgba(255,255,255,0.6)', width: '100%', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-            <IonIcon icon={imageOutline} style={{ fontSize: '40px' }} />
-            <p>ระบบรูปภาพปิดชั่วคราว (ใช้ภาพเริ่มต้น)</p>
-          </div>
+        {/* ส่วนแสดงพรีวิวและปุ่มเลือกรูป */}
+        <div className="image-upload-box" onClick={() => fileInputRef.current?.click()} style={{ cursor: 'pointer', border: '2px dashed #ccc', borderRadius: '15px', height: '200px', display: 'flex', justifyContent: 'center', alignItems: 'center', overflow: 'hidden', marginBottom: '20px' }}>
+          {previewUrl ? (
+            <img src={previewUrl} alt="Preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          ) : (
+            <div style={{ textAlign: 'center', color: '#666' }}>
+              <IonIcon icon={cameraOutline} style={{ fontSize: '48px' }} />
+              <p>แตะเพื่อเลือกรูปภาพ</p>
+            </div>
+          )}
         </div>
+
+        {/* Hidden Input สำหรับเลือกไฟล์ */}
+        <input 
+          type="file" 
+          accept="image/*" 
+          ref={fileInputRef} 
+          style={{ display: 'none' }} 
+          onChange={handleImageSelect} 
+        />
 
         <IonItem lines="none" className="custom-input-item">
           <IonLabel position="stacked">หัวข้อโพสต์ <span style={{color:'red'}}>*</span></IonLabel>
@@ -82,7 +121,7 @@ const CreateFeed: React.FC = () => {
         </IonItem>
 
         <IonItem lines="none" className="custom-input-item">
-          <IonLabel position="stacked">รายละเอียด (ระบุหรือไม่ก็ได้)</IonLabel>
+          <IonLabel position="stacked">รายละเอียด (เรื่องเล่าของคุณ)</IonLabel>
           <IonTextarea 
             placeholder="เล่ารายละเอียดเพิ่มเติมที่นี่..." 
             value={desc}
@@ -91,9 +130,11 @@ const CreateFeed: React.FC = () => {
           />
         </IonItem>
 
-        <IonButton expand="block" onClick={handlePostFeed} className="post-btn">โพสต์ลงหน้าฟีด</IonButton>
+        <IonButton expand="block" onClick={handlePostFeed} className="post-btn" style={{ marginTop: '20px' }}>
+          โพสต์ลงหน้าฟีด
+        </IonButton>
         
-        <IonLoading isOpen={loading} message="กำลังส่งโพสต์..." />
+        <IonLoading isOpen={loading} message="กำลังอัปโหลดรูปและโพสต์..." />
         <IonToast isOpen={!!toastMsg} message={toastMsg} duration={2000} onDidDismiss={() => setToastMsg('')} />
       </IonContent>
     </IonPage>
