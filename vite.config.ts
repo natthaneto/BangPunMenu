@@ -10,6 +10,10 @@ export default defineConfig({
     react(),
     legacy()
   ],
+  base: './', // ใช้ Relative Path เพื่อให้เรียกไฟล์จากโฟลเดอร์ไหนก็ได้
+  build: {
+    outDir: 'docs', // เปลี่ยนจาก dist เป็น docs
+  },
   test: {
     globals: true,
     environment: 'jsdom',
